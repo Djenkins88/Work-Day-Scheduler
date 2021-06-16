@@ -1,16 +1,22 @@
-var todayDate = moment().format('dddd, MMM Do YYYY');
-$("#currentDay").html(todayDate);
+// Using moment to show day and time
+$("#currentDay").text(moment().format("MMMM Do YYYY,"))
 
+
+
+var currentTime = moment().format("LT");
+$("#currentTime").append(currentTime);
+
+// function for saving inputs to local storage
 $(".saveBtn").on("click", function() {
-    // getting text and row values
+    
     var value = $(this).siblings(".description").val();
     var time = $(this).parent().attr("id");
 
-    // save in local storage
+    
     localStorage.setItem(time,value);
 });
 
-// get from local storage
+// getting from local storage
 $("9.description").val(localStorage.getItem("9")); 
 $("10.description").val(localStorage.getItem("10")); 
 $("11.description").val(localStorage.getItem("11")); 
@@ -21,23 +27,28 @@ $("3.description").val(localStorage.getItem("3"));
 $("4.description").val(localStorage.getItem("4"));
 $("5.description").val(localStorage.getItem("5"));
 
+// function to track current hour and show that hour by showing different colored time blocks
 function updateHour() {
-    // get current number of hours
+  
+    
     var currentHour = moment().hours();
 
     // loop over time blocks
     $(".time-block").each(function() {
-      var blockHour = parseInt($(this).attr("id").split("-")[1]);
+      var blockHour = parseInt($(this).attr("id"));
 
-      // check if we've moved past this time
+      // checking times for color
       if (blockHour < currentHour) {
-        $(this).addClass("past");
+       $(this).addClass("past");
+        $(this).removeClass("future");
+        $(this).removeClass("present");
       } 
       else if (blockHour === currentHour) {
         $(this).removeClass("past");
         $(this).addClass("present");
+        $(this).removeClass("future");
       } 
-      else {
+       else{
         $(this).removeClass("past");
         $(this).removeClass("present");
         $(this).addClass("future");
@@ -47,5 +58,4 @@ function updateHour() {
 
   updateHour();
 
-  // set up interval to check if current time needs to be updated
-  //var interval = setInterval(updateHour, 15000);
+ 
